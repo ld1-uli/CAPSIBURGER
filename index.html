@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Capsi Burger, fast-food ouvert 24h/24 à Sacré-Cœur 3, Dakar. Burgers, tacos, pizzas, chawarmas, crêpes. Commande sur WhatsApp.">
+<title>Capsi Burger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=DM+Sans:wght@400;500;700&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+/* Mise en page : navbar collante, vidéo verticale + accroche, bandeau commande, carte à onglets, photos du lieu, infos pratiques.
+   Palette tirée de la salle et de la carte : rouge sauce, jaune moutarde, noir rougeâtre. */
+:root{
+  --bg:#FAF6F5;
+  --surface:#FFFFFF;
+  --fg:#1E1415;
+  --muted:#6A5859;
+  --line:#E8DAD9;
+  --red:#B3171D;
+  --red-ink:#B3171D;
+  --on-red:#FFFFFF;
+  --gold:#F2B705;
+  --on-gold:#1E1415;
+  --band:#2B0F11;
+  --on-band:#FBF1EC;
+  --band-line:rgba(255,255,255,.16);
+  --hero-bg:#140A0B;
+  --hero-fg:#FFFFFF;
+  --hero-muted:rgba(255,255,255,.8);
+  --f-logo:"Pacifico","Brush Script MT",cursive;
+  --f-head:"Bowlby One","Arial Black",Impact,sans-serif;
+  --f-body:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#150E0F;--surface:#211617;--fg:#F8EFEA;--muted:#BCA9A6;--line:#3A2626;
+    --red:#D93430;--red-ink:#FF6B5F;--on-red:#FFFFFF;--gold:#FFC72C;--on-gold:#1E1415;
+    --band:#2A1719;--on-band:#F8EFEA;--band-line:rgba(255,255,255,.14);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#150E0F;--surface:#211617;--fg:#F8EFEA;--muted:#BCA9A6;--line:#3A2626;
+  --red:#D93430;--red-ink:#FF6B5F;--on-red:#FFFFFF;--gold:#FFC72C;--on-gold:#1E1415;
+  --band:#2A1719;--on-band:#F8EFEA;--band-line:rgba(255,255,255,.14);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:17px;line-height:1.55}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:30}
+h1,h2,h3,h4{margin:0}
+h1,h2{font-family:var(--f-head);font-weight:400;line-height:1.05;text-wrap:balance;letter-spacing:.01em}
+p{margin:0}
+a{color:inherit}
+button{font:inherit;color:inherit}
+a:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.wrap{width:100%;max-width:1152px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+section{padding-block:64px;scroll-margin-top:84px}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--red-ink)}
+
+/* navbar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:var(--bg);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:16px;padding-block:12px}
+.brand{display:flex;align-items:center;margin-right:auto;line-height:0;border-radius:50%}
+.brand img{width:48px;height:48px;border-radius:50%;display:block;border:1px solid var(--line)}
+.links{display:flex;gap:24px;font-weight:500;font-size:15px}
+.links a{text-decoration:none;color:var(--muted)}
+.links a:hover{color:var(--fg)}
+.icon-btn{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;cursor:pointer;flex:none}
+.icon-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;border-radius:999px;font-weight:700;text-decoration:none;font-size:16px;border:2px solid var(--fg);background:transparent;cursor:pointer}
+.btn.primary{background:var(--red);border-color:var(--red);color:var(--on-red)}
+.btn.small{padding:9px 16px;font-size:15px}
+
+/* hero */
+.heroband{position:relative;overflow:hidden;isolation:isolate;background:var(--hero-bg);color:var(--hero-fg);margin-bottom:8px}
+.heroband .bg{position:absolute;left:-40px;top:-40px;width:calc(100% + 80px);height:calc(100% + 80px);object-fit:cover;filter:blur(32px) brightness(.5) saturate(1.25);z-index:-1;pointer-events:none}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,360px);gap:64px;align-items:center;padding-block:44px 52px}
+.hero .txt{grid-column:1;grid-row:1;min-width:0}
+.frame{grid-column:2;grid-row:1;position:relative;aspect-ratio:9/16;width:100%;border-radius:28px;overflow:hidden;background:#000;box-shadow:0 24px 60px -20px rgba(0,0,0,.7)}
+.frame video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.hero h1{font-size:clamp(44px,7.4vw,88px);margin-block:14px 20px}
+.hero h1 em{font-style:normal;color:var(--gold)}
+.lead{font-size:19px;color:var(--hero-muted);max-width:46ch}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.badge{padding:6px 12px;border:1px solid var(--line);border-radius:999px;font-size:14px;font-weight:500;background:var(--surface)}
+.badge b{color:var(--red-ink)}
+.heroband .eyebrow{color:var(--gold)}
+.heroband .btn:not(.primary){border-color:#fff;color:#fff}
+.heroband .badge{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.28);color:#fff}
+.heroband .badge b{color:var(--gold)}
+
+/* commande */
+.order{background:var(--band);color:var(--on-band);border-radius:28px;padding:40px;display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center}
+.order > *{min-width:0}
+.order h2{font-size:clamp(30px,5vw,46px)}
+.order p{margin-top:12px;max-width:40ch;opacity:.8}
+.order .eyebrow{color:var(--gold)}
+.numbers{display:grid;gap:12px}
+.num{display:flex;justify-content:space-between;align-items:center;gap:12px;background:rgba(255,255,255,.07);border:1px solid var(--band-line);border-radius:16px;padding:16px 18px}
+a.num{text-decoration:none;color:inherit}
+a.num:hover{border-color:var(--gold)}
+.num span{font-family:var(--f-head);font-size:clamp(20px,4.6vw,28px);letter-spacing:.02em;overflow-wrap:anywhere}
+.num .copy{font-family:var(--f-body);letter-spacing:0;font-size:14px}
+.copy{font-weight:700;font-size:14px;border:0;border-radius:999px;padding:8px 14px;background:var(--gold);color:var(--on-gold);cursor:pointer;flex:none}
+
+/* carte */
+.head{display:flex;justify-content:space-between;align-items:end;gap:16px 24px;flex-wrap:wrap;margin-bottom:24px}
+.head h2{font-size:clamp(34px,6vw,56px)}
+.head p{color:var(--muted);max-width:42ch}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:10px;margin-bottom:18px;scrollbar-width:thin}
+.tab{flex:none;padding:10px 18px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-weight:700;font-size:15px;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--red);border-color:var(--red);color:var(--on-red)}
+.group + .group{margin-top:34px}
+.sub{font-family:var(--f-head);font-weight:400;font-size:24px;margin-bottom:6px}
+.gnote{color:var(--muted);font-size:15px;margin-bottom:8px}
+.dishes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:48px}
+.dish{padding-block:14px;border-bottom:1px solid var(--line)}
+.dish-top{display:flex;align-items:baseline;gap:10px}
+.dish h4{font-size:17px;font-weight:700;min-width:0}
+.dots{flex:1;min-width:12px;border-bottom:2px dotted var(--line);transform:translateY(-4px)}
+.prices{display:flex;gap:16px;flex:none}
+.pp{display:flex;flex-direction:column;align-items:flex-end;line-height:1.15}
+.pp small{font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--muted)}
+.pp b{font-size:17px;color:var(--red-ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+.pp b::after{content:" F";font-size:.7em;font-weight:500}
+.dish p{color:var(--muted);font-size:15px;margin-top:3px;max-width:52ch}
+.sauces{color:var(--muted);padding-block:14px;border-bottom:1px solid var(--line)}
+.sauces b{color:var(--fg)}
+
+/* lieu */
+.gallery{display:grid;grid-template-columns:1.25fr 1fr;grid-template-rows:1fr 1fr;gap:16px}
+.gallery figure{margin:0;position:relative;border-radius:22px;overflow:hidden;min-width:0;background:var(--surface)}
+.gallery img{width:100%;height:100%;object-fit:cover;display:block}
+.gallery .tall{grid-row:span 2;min-height:420px}
+.gallery figcaption{position:absolute;left:12px;bottom:12px;background:rgba(0,0,0,.62);color:#fff;font-size:13px;font-weight:500;padding:5px 11px;border-radius:999px}
+.quote{margin-top:16px;background:var(--red);color:var(--on-red);border-radius:24px;padding:34px;display:grid;gap:8px}
+.quote p{font-family:var(--f-head);font-size:clamp(24px,4.4vw,40px);line-height:1.12;text-wrap:balance}
+.quote small{font-size:14px;opacity:.85}
+
+/* infos */
+.find{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.find > *{min-width:0}
+.find h2{font-size:clamp(34px,6vw,56px);margin-top:12px}
+dl{margin:0}
+.row{display:grid;grid-template-columns:120px 1fr;gap:12px;padding-block:16px;border-top:1px solid var(--line)}
+.row:last-child{border-bottom:1px solid var(--line)}
+dt{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding-top:3px}
+dd{margin:0;font-weight:500}
+footer{border-top:1px solid var(--line);padding-block:28px 40px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:15px}
+footer a{font-weight:700;color:var(--fg)}
+.fb{display:flex;align-items:center;gap:12px}
+.fb img{border-radius:50%;display:block}
+.mapcard{margin-top:40px;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);border:1px solid var(--line);border-radius:24px;overflow:hidden;background:var(--surface)}
+.map-art{min-height:260px;display:grid;place-items:center;background-color:var(--bg);background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:32px 32px}
+.map-art svg{width:84px;height:auto;filter:drop-shadow(0 8px 10px rgba(0,0,0,.25))}
+.map-info{padding:32px;display:grid;gap:10px;align-content:center;min-width:0}
+.map-info h3{font-family:var(--f-head);font-weight:400;font-size:28px}
+.coords{color:var(--muted);font-size:14px}
+
+@media (max-width:860px){
+  .hero{grid-template-columns:1fr;gap:28px;padding-block:24px 44px}
+  .hero .txt,.frame{grid-column:auto;grid-row:auto}
+  .frame{max-width:340px;margin-inline:auto}
+  .mapcard{grid-template-columns:1fr}
+  .map-art{min-height:200px}
+  .order,.find{grid-template-columns:1fr}
+  .order{padding:28px 22px}
+  .dishes{grid-template-columns:1fr}
+  .gallery{grid-template-columns:1fr;grid-template-rows:none}
+  .gallery .tall{grid-row:auto;min-height:0;aspect-ratio:5/4}
+  .gallery figure:not(.tall){aspect-ratio:4/3}
+  .links{display:none}
+  section{padding-block:48px}
+  .row{grid-template-columns:96px 1fr}
+}
+@media (prefers-reduced-motion:no-preference){
+  .btn,.copy,.tab{transition:transform .15s ease}
+  .btn:hover,.copy:hover,.tab:hover{transform:translateY(-2px)}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+
+<style>
+/* base (reset minimal) */
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+.map-art iframe{display:block;width:100%;height:100%;min-height:300px;border:0}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#haut" aria-label="Capsi Burger, accueil"><img src="./logo.png" alt="Capsi Burger" width="48" height="48"></a>
+    <nav class="links" aria-label="Navigation">
+      <a href="#commander">Commander</a>
+      <a href="#carte">La carte</a>
+      <a href="#lieu">Le lieu</a>
+      <a href="#infos">Nous trouver</a>
+    </nav>
+    <button class="icon-btn" id="theme" type="button" aria-label="Changer de thème" aria-pressed="false">
+      <svg id="ico-sun" viewBox="0 0 24 24" hidden><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg id="ico-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+    <a class="btn primary small" href="#commander">Commander</a>
+  </div>
+</header>
+
+<main id="haut">
+    <div class="heroband">
+      <video class="bg" id="hb" autoplay muted loop playsinline preload="auto" poster="media/poster.jpg" aria-hidden="true" tabindex="-1"><source src="media/capsi.mp4" type="video/mp4"></video>
+      <div class="wrap hero">
+      <div class="frame">
+        <video id="hv" autoplay muted loop playsinline preload="auto" poster="media/poster.jpg" aria-label="Préparation d'un burger en cuisine chez Capsi Burger">
+          <source src="./WhatsApp Video 2026-10-18 at 17.14.15.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="txt">
+        <span class="eyebrow">Fast-food · Sacré-Cœur 3, Dakar</span>
+        <h1>Un burger, <em>une histoire.</em></h1>
+        <p class="lead">Burgers, tacos, chawarmas, pizzas, crêpes et plats grillés, préparés devant vous. Ouvert 24h/24 et 7j/7, en face de l'arrêt BRT.</p>
+        <div class="cta-row">
+          <a class="btn primary" href="#carte">Voir la carte</a>
+          <a class="btn" href="#commander">Commander sur WhatsApp</a>
+        </div>
+        <div class="badges">
+          <span class="badge"><b>24h/24</b> · 7j/7</span>
+          <span class="badge">Livraison</span>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <div class="wrap">
+    <section id="commander" style="padding-top:8px">
+      <div class="order">
+        <div>
+          <span class="eyebrow">Commande et livraison</span>
+          <h2>Écrivez-nous, on s'occupe du reste.</h2>
+          <p>Touchez un numéro pour commander sur WhatsApp, de jour comme de nuit. Deux lignes pour vous répondre plus vite.</p>
+        </div>
+        <div class="numbers">
+          <a class="num" href="https://wa.me/221710337272" target="_blank" rel="noopener" aria-label="Écrire sur WhatsApp au +221 71 033 72 72"><span>+221 71 033 72 72</span><span class="copy">WhatsApp</span></a>
+          <a class="num" href="https://wa.me/221710337474" target="_blank" rel="noopener" aria-label="Écrire sur WhatsApp au +221 71 033 74 74"><span>+221 71 033 74 74</span><span class="copy">WhatsApp</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section id="carte" style="padding-top:24px">
+      <div class="head">
+        <h2>La carte</h2>
+        <p>Tous les prix sont en F CFA. Burgers, sandwichs, tacos et crêpes sont servis avec frites quand c'est indiqué.</p>
+      </div>
+      <div class="tabs" role="tablist" aria-label="Catégories de la carte" id="tabs"></div>
+      <div id="panel" role="tabpanel"></div>
+    </section>
+
+    <section id="lieu">
+      <div class="head">
+        <h2>Le lieu</h2>
+        <p>Une façade qui s'allume la nuit et une salle aux murs peints, ouverte à toute heure.</p>
+      </div>
+      <div class="gallery">
+        <figure class="tall"><img src="./facade.jpg" alt="Façade de Capsi Burger de nuit, enseigne lumineuse et slogan « Un burger, une histoire »" loading="lazy"><figcaption>La façade, Sacré-Cœur 3</figcaption></figure>
+        <figure><img src="./salle-1.jpg" alt="Salle de Capsi Burger avec fresque de graffitis, murs orange et chaises jaunes" loading="lazy"><figcaption>La salle</figcaption></figure>
+        <figure><img src="./salle-2.jpg" alt="Banquettes grises et tables de la salle sous la fresque murale" loading="lazy"><figcaption>Les banquettes</figcaption></figure>
+      </div>
+      <div class="quote">
+        <p>Ici, on n'achète pas qu'un burger, on s'offre un kiff.</p>
+        <small>Le néon de la salle</small>
+      </div>
+    </section>
+
+    <section id="infos">
+      <div class="find">
+        <div>
+          <span class="eyebrow">Nous trouver</span>
+          <h2>En face de l'arrêt BRT.</h2>
+        </div>
+        <dl>
+          <div class="row"><dt>Adresse</dt><dd>Rue SC 02, Sacré-Cœur 3, Dakar</dd></div>
+          <div class="row"><dt>Repère</dt><dd>Face à l'arrêt BRT</dd></div>
+          <div class="row"><dt>Horaires</dt><dd>24h/24, 7j/7</dd></div>
+          <div class="row"><dt>Commande</dt><dd><a href="" target="_blank" rel="noopener">+221 71 033 72 72</a><br><a href="">+221 71 033 74 74</a><br><small style="color:var(--muted)">Sur WhatsApp</small></dd></div>
+          <div class="row"><dt>Réseaux</dt><dd><a href="https://www.instagram.com/capsiburger/" target="_blank" rel="noopener">Instagram @capsiburger</a><br><a href="https://www.tiktok.com/@capsi.burger" target="_blank" rel="noopener">TikTok @capsi.burger</a></dd></div>
+        </dl>
+      </div>
+      <div class="mapcard">
+        <div class="map-art">
+          <iframe title="Carte Google Maps : Capsi Burger" src="https://maps.google.com/maps?q=14.7168856,-17.4663319&z=17&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+        </div>
+        <div class="map-info">
+          <span class="eyebrow">Plan d'accès</span>
+          <h3>Capsi Burger</h3>
+          <p>Rue SC 02, Sacré-Cœur 3, Dakar<br>En face de l'arrêt BRT</p>
+          <p class="coords">14,7169° N, 17,4663° O · Plus code PG8M+QF3</p>
+          <div class="cta-row">
+            <a class="btn primary" href="https://www.google.com/maps/search/?api=1&query=14.7168856%2C-17.4663319&query_place_id=ChIJ7di3agBzwQ4R5NWnlpQDxRc" target="_blank" rel="noopener">Ouvrir dans Google Maps</a>
+            <a class="btn" href="https://www.google.com/maps/dir/?api=1&destination=14.7168856%2C-17.4663319&destination_place_id=ChIJ7di3agBzwQ4R5NWnlpQDxRc" target="_blank" rel="noopener">Itinéraire</a>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+  </main>
+
+  <div class="wrap">
+  <footer>
+    <span class="fb"><img src="logo.png" alt="" width="40" height="40"> © 2026 Capsi Burger · Sacré-Cœur 3, Dakar</span>
+    <a href="https://www.instagram.com/capsiburger/" target="_blank" rel="noopener">Suivez-nous sur Instagram</a>
+  </footer>
+</div>
+
+<script>
+(function(){
+  /* ---------- carte ---------- */
+  var MENU=[
+   {id:"burgers",label:"Burgers",groups:[{items:[
+    ["Burger Viande","Sauce mayo, ketchup, steak, emmental, salade, tomate, frites","2 000"],
+    ["Burger Poulet","Sauce biggy, escalope de poulet, emmental, salade, frites","2 500"],
+    ["Burger Capsi","Steak, bacon, cheddar, biggy, algérienne, salade, tomate, oignon, frites","3 000"],
+    ["Double burger viande","2 steaks, sauce (mayo, ketchup), emmental, salade, frites","3 500"],
+    ["Double burger poulet","2 escalopes de poulet, sauce biggy, emmental, salade, frites","4 000"],
+    ["Burger Complet","Steak, œuf, fromage, frites, ketchup, mayo","2 000"],
+    ["Burger Royal","Viande, légumes, œuf, fromage, frites","2 500"]]}]},
+   {id:"sandwichs",label:"Sandwichs",groups:[{items:[
+    ["Sandwich Hot Dog","Hot dog, pain, ketchup, frites, mayo","1 700"],
+    ["Sandwich Steak","Sauce (mayo, ketchup), viande, oignon cru, légumes, salade, frites","1 800"],
+    ["Sandwich Merguez","Sauce (mayo, ketchup), moutarde, salade, tomate, frites","1 500"],
+    ["Sandwich Poulet","Poulet, sauce (mayo, ketchup), moutarde, oignon cru, légumes, salade, frites","2 000"],
+    ["Sandwich Mixte","Viande, poulet, pain, frites, moutarde, mayo","2 000"],
+    ["Sandwich Filet de Viande","Filet de bœuf, sauce biggy, poivron (vert, jaune, rouge), oignon cru, emmental, frites, légumes, salade, maïs","2 500"],
+    ["Sandwich Filet de Poulet","Escalope de poulet, sauce algérienne, poivron (vert, jaune, rouge), oignon cru, maïs, emmental, frites","3 000"],
+    ["Sandwich Capsi","Jambon, œufs, fromage, sauce algérienne, frites, salade, tomate","2 500"],
+    ["Sandwich Michoui","","4 500"],
+    ["Sandwich Foie","","1 800"],
+    ["Norvégienne","Hot dog, œuf, fromage, mayo, ketchup, salade, tomate, oignon, frites","2 000"]]}]},
+   {id:"chawarmas",label:"Chawarmas",groups:[{items:[
+    ["Chawarma Viande","Viande, légumes (persil, oignon, tomate), sauce blanche, frites","2 000"],
+    ["Chawarma Poulet","Escalope de poulet, sauce (mayo, ketchup), légumes (salade, tomate, cornichon), frites","2 000"],
+    ["Chawarma Viande Royal","Viande, légumes (persil, oignon, tomate), sauce blanche, frites, œuf, fromage","2 500"],
+    ["Chawarma Poulet Royal","Escalope de poulet, sauce (mayo, ketchup), légumes (salade, tomate, cornichon), frites, œuf, fromage","3 000"],
+    ["Pacha Capsi","Hot dog, œuf, fromage, viande chawarma, frites, ketchup, mayonnaise","3 000"]]}]},
+   {id:"tacos",label:"Tacos",groups:[{items:[
+    ["Tacos Poulet","Oignons, mayo, poivron, kebab, fromage, frites","3 500"],
+    ["Tacos Steak","Oignons, poivron, steak, fromage, frites","3 500"],
+    ["Tacos Merguez","Poivron, merguez, fromage, frites","3 500"],
+    ["Tacos Chawarma","Oignons, persil, viande chawarma, fromage, frites","3 500"],
+    ["Tacos Poulet Pané","Oignons, poivron, poulet pané, fromage, frites","3 500"],
+    ["Tacos Michoui","Oignons, poivron, michoui, fromage, frites","4 000"],
+    ["Tacos Mixtes","Poulet, viande, frites, poivron","4 500"],
+    ["Tacos Viande","Steak, sauce algérienne, emmental, frites, poivron","3 500"],
+    ["Texmex Viande","Steak, mayo, ketchup, maïs, emmental, frites, poivron","3 000"],
+    ["Texmex Poulet","Mayo, ketchup, maïs, escalope de poulet, fromage, emmental, frites, poivron","3 500"],
+    ["Tacos Street Légende","Sauce yoyo, merguez, emmental, poivron, frites","3 500"]]}]},
+   {id:"paninis",label:"Paninis",groups:[{items:[
+    ["Panini Jambon Fromage","Sauce biggy, jambon, emmental","2 000"],
+    ["Panini Poulet","Escalope de poulet, sauce algérienne, emmental","3 000"],
+    ["Panini Viande","Sauce algérienne, emmental, viande steak","2 500"],
+    ["Panini Oriental","Sauce biggy, merguez, emmental","2 500"],
+    ["Panini Capsi","Bacon, sauce biggy, emmental, merguez","3 000"]]}]},
+   {id:"crepes",label:"Crêpes",groups:[
+    {t:"Crêpes salées",items:[
+    ["Crêpe Bideew","Jambon, fromage, merguez","3 500"],
+    ["Crêpe Sicap","Bacon, merguez, frites, fromage cheddar, sauce (biggy, algérienne, mayo)","5 000"],
+    ["Crêpe Poulet","Escalope de poulet, fromage, sauce (biggy, algérienne, samouraï)","3 500"],
+    ["Crêpe Jet d'eau","Jambon, fromage, œufs, sauce cocktail","3 500"],
+    ["Crêpe Mixte","Viande hachée, fromage, poulet, merguez, sauce biggy","5 000"],
+    ["Crêpe PBS","Crème Philadelphia, fromage emmental, frites, œufs","3 500"],
+    ["Crêpe Daara J","Kebab, oignon, tomate, viande hachée, sauce samouraï","3 500"]]},
+    {t:"Crêpes sucrées",items:[
+    ["Crêpe Nutella","Nutella (option avec coco)","2 500"],
+    ["Crêpe Sucre","Sucre, beurre (option avec coco)","2 500"],
+    ["Crêpe Lotus","Spéculoos, crème Biscoff","2 500"],
+    ["Crêpe Capsi","Nutella, banane, chantilly","2 500"]]}]},
+   {id:"pizzas",label:"Pizzas",cols:["MM","GM"],groups:[{items:[
+    ["Reine","Tomate, jambon, champignon, fromage",["5 000","7 000"]],
+    ["Margarita","Tomate, fromage",["5 000","7 000"]],
+    ["Végétarien","Tomate, poivron, olive, oignon, fromage",["5 000","7 000"]],
+    ["Chicken","Crème fraîche, pomme de terre, poulet, fromage",["5 000","7 000"]],
+    ["Orientale","Tomate, merguez, œuf, fromage",["5 000","7 000"]],
+    ["Pizza Babel","Viande chawarma, persil, oignon, fromage, sauce","8 000"],
+    ["Chèvre Miel","Mozzarella, chèvre, crème, miel","8 000"],
+    ["Cordon Bleu","Jambon, nuggets","8 000"],
+    ["Pizza Sicap Street","Viande chawarma, sauce tomate, jambon, viande hachée, poivron, fromage","9 000"],
+    ["Penda","Crème fraîche, jambon, poulet, fromage","8 000"],
+    ["Fruit de Mer","Thon, crevette, fromage, calamar","9 000"],
+    ["4 Fromages","Gruyère, mozzarella, chèvre, bleu","7 000"],
+    ["Liberté","Fromage, jambon, chèvre, œuf","9 000"],
+    ["Capsi Roi","Viande hachée, poulet, champignon, sauce tomate, jambon, poivron, fromage, crème fraîche, oignons","9 000"]]}]},
+   {id:"poulet",label:"Poulet",cols:["DP","PE"],groups:[{items:[
+    ["Poulet Rôti","Sauce, oignon, frites, piment, moutarde, ketchup, mayo",["4 000","7 000"]],
+    ["Poulet Grillé","Sauce oignon, frites, piment, moutarde, ketchup, mayo, salade",["4 000","7 000"]]]}]},
+   {id:"plats",label:"Plats",groups:[
+    {t:"Entrées",n:"Vinaigrette épaisse ou classique au choix.",items:[
+    ["Salade Avocat Crevette","Avocat, crevettes","4 000"],
+    ["Salade Niçoise","Pomme de terre, œufs, thon, haricot vert, carotte, tomate, anchois","5 000"],
+    ["Salade César","Blanc de poulet pané, parmesan","5 000"],
+    ["Salade Composée","Crudités de saison","5 000"]]},
+    {t:"Côté mer",items:[
+    ["Wok nouilles crevettes","","6 000"],
+    ["Brochettes de lotte","","8 000"],
+    ["Crevettes sautées à l'ail","","7 000"],
+    ["Gambas grillées","","10 000"],
+    ["Dorade grillée","","7 000"],
+    ["Petit thiof grillé","","10 000"]]},
+    {t:"Côté terre",items:[
+    ["Entrecôte grillée","","10 000"],
+    ["Filet de bœuf","","10 000"],
+    ["Côtelettes d'agneau","","12 000"],
+    ["Dibi d'agneau","","12 000"],
+    ["Brochette de bœuf","","9 000"],
+    ["Wok nouilles poulet","Nouilles, blanc de poulet","5 000"],
+    ["Brochettes de poulet","","6 000"],
+    ["Demi-poulet grillé","","7 000"],
+    ["Escalope de poulet","","7 000"]]},
+    {t:"Accompagnements",items:[
+    ["Riz blanc","","1 500"],["Aloco","","1 500"],["Attiéké","","1 500"],
+    ["Frites","","1 500"],["Légumes","","1 500"],["Pommes sautées","","1 500"]]},
+    {t:"Nos sauces",text:"Roquefort, poivre, champignon, des îles, tomate, César, cocktail, pistou, yassa."}]},
+   {id:"brunch",label:"Brunch",groups:[
+    {t:"Viennoiseries",items:[
+    ["Croissant au beurre","","600"],
+    ["Pain au chocolat","","800"],
+    ["Pain aux raisins","","700"],
+    ["Pain suisse","","700"]]},
+    {t:"Omelettes et œufs",items:[
+    ["Omelette nature","","2 500"],
+    ["Omelette jambon","","3 000"],
+    ["Œuf jambon fromage","","3 500"],
+    ["Œuf Capsi Burger","Au choix : sur le plat, brouillés, omelette ou pochés, avec pommes sautées, fromage, saucisses, crudités","4 500"]]}]}
+  ];
+
+  function priceHtml(p,cols){
+    if(Array.isArray(p)) return '<span class="prices">'+p.map(function(v,k){return '<span class="pp"><small>'+(cols&&cols[k]||"")+'</small><b>'+v+'</b></span>'}).join("")+'</span>';
+    return '<span class="prices"><span class="pp"><b>'+p+'</b></span></span>';
+  }
+  function dish(i,cols){
+    return '<article class="dish"><div class="dish-top"><h4>'+i[0]+'</h4><span class="dots"></span>'+priceHtml(i[2],cols)+'</div>'+(i[1]?'<p>'+i[1]+'</p>':'')+'</article>';
+  }
+  var tabs=document.getElementById("tabs"), panel=document.getElementById("panel");
+  function show(id){
+    var cat=MENU.filter(function(c){return c.id===id})[0]||MENU[0];
+    Array.prototype.forEach.call(tabs.children,function(b){b.setAttribute("aria-selected",b.dataset.id===cat.id?"true":"false")});
+    panel.innerHTML=cat.groups.map(function(g){
+      return '<div class="group">'+(g.t?'<h3 class="sub">'+g.t+'</h3>':'')+(g.n?'<p class="gnote">'+g.n+'</p>':'')+
+        (g.items?'<div class="dishes">'+g.items.map(function(i){return dish(i,cat.cols)}).join("")+'</div>':'')+
+        (g.text?'<p class="sauces">'+g.text+'</p>':'')+'</div>';
+    }).join("");
+  }
+  MENU.forEach(function(c){
+    var b=document.createElement("button");
+    b.type="button";b.className="tab";b.textContent=c.label;b.dataset.id=c.id;b.setAttribute("role","tab");
+    b.addEventListener("click",function(){show(c.id)});
+    tabs.appendChild(b);
+  });
+  show("burgers");
+
+  /* ---------- thème clair / sombre ---------- */
+  var root=document.documentElement, tb=document.getElementById("theme"),
+      sun=document.getElementById("ico-sun"), moon=document.getElementById("ico-moon"),
+      mq=window.matchMedia("(prefers-color-scheme: dark)");
+  try{var s=localStorage.getItem("capsi-theme");if(s==="dark"||s==="light")root.setAttribute("data-theme",s)}catch(e){}
+  function eff(){return root.getAttribute("data-theme")||(mq.matches?"dark":"light")}
+  function sync(){
+    var d=eff()==="dark";
+    tb.setAttribute("aria-pressed",d?"true":"false");
+    tb.setAttribute("aria-label",d?"Passer au thème clair":"Passer au thème sombre");
+    sun.hidden=!d;moon.hidden=d;
+  }
+  tb.addEventListener("click",function(){
+    var n=eff()==="dark"?"light":"dark";
+    root.setAttribute("data-theme",n);
+    try{localStorage.setItem("capsi-theme",n)}catch(e){}
+    sync();
+  });
+  if(mq.addEventListener)mq.addEventListener("change",sync);
+  sync();
+
+  /* ---------- vidéo : muette, en boucle ---------- */
+  var v=document.getElementById("hv"), hb=document.getElementById("hb");
+  v.muted=true; hb.muted=true;
+  function tryPlay(el){var r=el.play();if(r&&r.catch)r.catch(function(){})}
+  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches){v.removeAttribute("autoplay");hb.removeAttribute("autoplay");v.pause();hb.pause()}
+  else{tryPlay(v);tryPlay(hb)}
+  v.addEventListener("play",function(){try{hb.currentTime=v.currentTime}catch(e){}tryPlay(hb)});
+  v.addEventListener("pause",function(){hb.pause()});
+})();
+</script>
+</body>
+</html>
